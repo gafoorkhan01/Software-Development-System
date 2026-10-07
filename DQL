@@ -1,0 +1,226 @@
+-- ===========================
+-- Q1. Display all Projects
+-- ===========================
+SELECT * FROM Project;
+
+-- ===========================
+-- Q2. Display all Employees
+-- ===========================
+SELECT * FROM Employee;
+
+-- ===========================
+-- Q3. Display all Teams
+-- ===========================
+SELECT * FROM Team;
+
+-- ===========================
+-- Q4. Display all Sprints
+-- ===========================
+SELECT * FROM Sprint;
+
+-- ===========================
+-- Q5. Display all Tasks
+-- ===========================
+SELECT * FROM Task;
+
+-- ===========================
+-- Q6. Display all Bugs
+-- ===========================
+SELECT * FROM Bug;
+
+-- ===========================
+-- Q7. Display Active Projects
+-- ===========================
+SELECT *
+FROM Project
+WHERE status='Active';
+
+-- ===========================
+-- Q8. Display Completed Projects
+-- ===========================
+SELECT *
+FROM Project
+WHERE status='Completed';
+
+-- ===========================
+-- Q9. Display High Priority Tasks
+-- ===========================
+SELECT *
+FROM Task
+WHERE priority='High';
+
+-- ===========================
+-- Q10. Display Open Bugs
+-- ===========================
+SELECT *
+FROM Bug
+WHERE status='Open';
+
+-- ===========================
+-- Q11. Employees Sorted by Name
+-- ===========================
+SELECT *
+FROM Employee
+ORDER BY first_name;
+
+-- ===========================
+-- Q12. Projects Sorted by Start Date
+-- ===========================
+SELECT *
+FROM Project
+ORDER BY start_date DESC;
+
+-- ===========================
+-- Q13. Display Task Title and Status
+-- ===========================
+SELECT task_title,status
+FROM Task;
+
+-- ===========================
+-- Q14. Display Project with Team
+-- ===========================
+SELECT
+p.project_name,
+t.team_name
+FROM Project p
+JOIN Team t
+ON p.project_id=t.project_id;
+
+-- ===========================
+-- Q15. Display Task with Employee
+-- ===========================
+SELECT
+t.task_title,
+CONCAT(e.first_name,' ',e.last_name) AS employee_name
+FROM Task t
+JOIN Employee e
+ON t.assigned_to=e.employee_id;
+
+-- ===========================
+-- Q16. Display Bug with Task
+-- ===========================
+SELECT
+b.title,
+t.task_title
+FROM Bug b
+JOIN Task t
+ON b.task_id=t.task_id;
+
+-- ===========================
+-- Q17. Display Sprint with Project
+-- ===========================
+SELECT
+s.sprint_name,
+p.project_name
+FROM Sprint s
+JOIN Project p
+ON s.project_id=p.project_id;
+
+-- ===========================
+-- Q18. Number of Employees in Each Team
+-- ===========================
+SELECT
+team_id,
+COUNT(employee_id) AS employee_count
+FROM Team_Member
+GROUP BY team_id;
+
+-- ===========================
+-- Q19. Number of Tasks in Each Sprint
+-- ===========================
+SELECT
+sprint_id,
+COUNT(*) AS total_tasks
+FROM Task
+GROUP BY sprint_id;
+
+-- ===========================
+-- Q20. Number of Bugs for Each Task
+-- ===========================
+SELECT
+task_id,
+COUNT(*) AS total_bugs
+FROM Bug
+GROUP BY task_id;
+
+-- ===========================
+-- Q21. Total Number of Employees
+-- ===========================
+SELECT
+COUNT(*) AS total_employees
+FROM Employee;
+
+-- ===========================
+-- Q22. Average Employee Salary
+-- ===========================
+SELECT
+AVG(salary) AS average_salary
+FROM Employee;
+
+-- ===========================
+-- Q23. Highest Employee Salary
+-- ===========================
+SELECT
+MAX(salary) AS highest_salary
+FROM Employee;
+
+-- ===========================
+-- Q24. Lowest Employee Salary
+-- ===========================
+SELECT
+MIN(salary) AS lowest_salary
+FROM Employee;
+
+-- ===========================
+-- Q25. Count Open Bugs
+-- ===========================
+SELECT
+COUNT(*) AS open_bugs
+FROM Bug
+WHERE status='Open';
+
+-- ===========================
+-- Q26. Teams Having More Than One Employee
+-- ===========================
+SELECT
+team_id,
+COUNT(employee_id) AS employee_count
+FROM Team_Member
+GROUP BY team_id
+HAVING COUNT(employee_id)>1;
+
+-- ===========================
+-- Q27. Employees Whose Names Start with A
+-- ===========================
+SELECT *
+FROM Employee
+WHERE first_name LIKE 'A%';
+
+-- ===========================
+-- Q28. Search Project by Keyword
+-- ===========================
+SELECT *
+FROM Project
+WHERE UPPER(project_name) LIKE '%AI%';
+
+-- ===========================
+-- Q29. Projects Having Active Sprints
+-- ===========================
+SELECT project_name
+FROM Project
+WHERE project_id IN
+(
+SELECT project_id
+FROM Sprint
+WHERE status='Active'
+);
+
+-- ===========================
+-- Q30. Display Project Manager
+-- ===========================
+SELECT
+p.project_name,
+CONCAT(e.first_name,' ',e.last_name) AS manager_name
+FROM Project p
+JOIN Employee e
+ON p.manager_id=e.employee_id;
